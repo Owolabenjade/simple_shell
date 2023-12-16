@@ -1,4 +1,4 @@
-nclude "shell.h"
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,11 +10,19 @@ int main(void)
 				while (1)
 						{
 									printf("$ ");
-											getline(&buffer, &bufsize, stdin);
+											/*Use getline from the GNU library, which requires _GNU_SOURCE*/
+											ssize_t n = getline(&buffer, &bufsize, stdin);
 
-													/*Execute the command using the execute_command function*/
-													execute_command(buffer);
-														}
+													if (n == -1)
+																{
+																				/*Handle end-of-file condition (Ctrl+D)*/
+																				printf("\n");
+																							break;
+																									}
+
+															/*Execute the command using the execute_command function*/
+															execute_command(buffer);
+																}
 
 					free(buffer);
 						return (0);

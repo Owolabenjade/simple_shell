@@ -9,7 +9,7 @@ void execute_command(char *command)
 		pid_t pid;
 			int status;
 
-				/* Remove the newline character */
+				/*Remove the newline character*/
 				size_t len = strlen(command);
 					if (command[len - 1] == '\n')
 							{
