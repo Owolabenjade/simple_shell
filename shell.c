@@ -1,70 +1,35 @@
 #include "shell.h"
 
-void display_prompt(void)
+void execute_command(char *line)
 {
-	printf("#cisfun$ ");
-}
-
-char *read_line(void)
-{
-	char *line = NULL;
-	size_t len = 0;
-
-	if (getline(&line, &len, stdin) == -1)
-	{
-		if (feof(stdin))
-		{
-			printf("\n");
-			free(line);
-																						exit(EXIT_SUCCESS);
-																								} else {
-																												perror("getline");
-																															exit(EXIT_FAILURE);
-																																	}
-										}
-
-					return (line);
-}
-
-void execute_command(char *command)
-{
-		pid_t child_pid;
+		pid_t pid;
 			int status;
 
-				child_pid = fork();
-					if (child_pid == -1)
-							{
-										perror("fork");
-												exit(EXIT_FAILURE);
-													}
+				line[strlen(line) - 1] = '\0'; // Remove the newline character
 
-						if (child_pid == 0)
+					pid = fork();
+
+						if (pid == -1)
 								{
-											/* Child process */
-											if (execve(command, NULL, NULL) == -1)
-														{
-																		perror("execve");
-																					exit(EXIT_FAILURE);
-																							}
-												} else {
-															/* Parent process */
-															waitpid(child_pid, &status, 0);
-																}
-}
+											perror("fork");
+													exit(EXIT_FAILURE);
+														}
 
-int main(void)
-{
-		char *command;
+							if (pid == 0)
+									{
+												if (execve(line, NULL, NULL) == -1)
+															{
+																			perror(line);
+																						exit(EXIT_FAILURE);
+																								}
+													}
+								else
+										{
+													waitpid(pid, &status, 0);
 
-			while (1) {
-						display_prompt();
-								command = read_line();
-										command[strlen(command) - 1] = '\0';
-
-												execute_command(command);
-
-														free(command);
-															}
-
-				return (0);
+															if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS)
+																			return;
+																	else
+																					fprintf(stderr, "./hsh: 1: %s: not found\n", line);
+																		}
 }
