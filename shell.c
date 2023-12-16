@@ -1,35 +1,38 @@
 #include "shell.h"
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-void execute_command(char *line)
+void execute_command(char *command)
 {
 		pid_t pid;
 			int status;
 
-				line[strlen(line) - 1] = '\0'; // Remove the newline character
+				/* Remove the newline character */
+				size_t len = strlen(command);
+					if (command[len - 1] == '\n')
+							{
+										command[len - 1] = '\0';
+											}
 
-					pid = fork();
-
-						if (pid == -1)
-								{
-											perror("fork");
-													exit(EXIT_FAILURE);
-														}
+						pid = fork();
 
 							if (pid == 0)
 									{
-												if (execve(line, NULL, NULL) == -1)
+												/* Child process */
+												if (execve(command, NULL, NULL) == -1)
 															{
-																			perror(line);
-																						exit(EXIT_FAILURE);
-																								}
-													}
-								else
-										{
-													waitpid(pid, &status, 0);
-
-															if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS)
-																			return;
-																	else
-																					fprintf(stderr, "./hsh: 1: %s: not found\n", line);
-																		}
+																			perror("Error");
+																					}
+														exit(EXIT_FAILURE);
+															} else if (pid < 0)
+																	{
+																				/* Fork failed */
+																				perror("Error");
+																					} else
+																							{
+																										/* Parent process */
+																										waitpid(pid, &status, 0);
+																											}
 }
