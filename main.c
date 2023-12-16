@@ -1,8 +1,20 @@
-#include "shell.h"
+#include "main.h"
 
 int main(void)
 {
-	main_loop();
+	char *command;
 
-	return (0);
+			while (1)
+					{
+								display_prompt();
+										command = read_line();
+											   /* Remove the newline character */
+											   command[strlen(command) - 1] = '\0';  
+
+											   		execute_command(command);
+
+															free(command);
+																}
+
+				return (0);
 }
