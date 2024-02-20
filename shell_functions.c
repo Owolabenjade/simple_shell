@@ -2,6 +2,12 @@
 
 #include "shell.h"
 
+/**
+*read_input - Read input from the user
+*
+*Return: A pointer to the user input
+*/
+
 char *read_input(void)
 {
 	char *input = NULL;
@@ -10,9 +16,14 @@ char *read_input(void)
 	printf("($) ");
 	getline(&input, &bufsize, stdin);
 
-	return input;
+	return (input);
 }
 
+/**
+*execute_command - Execute the user-input command
+*@input: User input as a command
+ */
+ 
 void execute_command(char *input)
 {
 	/* Implement command execution logic here */
