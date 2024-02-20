@@ -1,10 +1,12 @@
+/* shell.h */
+
 #ifndef SHELL_H
 #define SHELL_H
 
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Function prototypes */
-void execute_command(char *command);
+char *read_input(void);
+void execute_command(char *input);
 
 #endif /* SHELL_H */
