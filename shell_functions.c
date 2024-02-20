@@ -52,7 +52,8 @@ void execute_command(char *input)
 	if (pid == 0)
 	{
 		/* Child process */
-		if (execve(input,(char *const[]){input, NULL}, NULL) == -1)
+		char *args[] = {input, NULL};
+		if (execve(input, args, NULL) == -1)
 		{
 			perror("Error executing command");
 			exit(EXIT_FAILURE);
