@@ -1,21 +1,21 @@
-/* 0main.c */
+/* main.c */
 
 #include "shell.h"
 
 int main(void)
 {
-    char *input;
+	char *input;
 
-    while (1)
-    {
-        input = read_input();
-        if (input == NULL)
-            break;
+	while (1)
+	{
+		input = read_input();
+		if (input == NULL)
+			break;
 
-        execute_command(input);
+		execute_command(input);
 
-        free(input);
-    }
+		free(input);
+	}
 
-    return (0);
+	return (0);
 }
