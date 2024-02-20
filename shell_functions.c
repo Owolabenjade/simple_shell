@@ -1,4 +1,6 @@
 #include "shell.h"
+#include <string.h>
+#include <sys/wait.h>
 
 /**
  * read_input - Read input from the user.
@@ -50,7 +52,7 @@ void execute_command(char *input)
 	if (pid == 0)
 	{
 		/* Child process */
-		if (execve(input, NULL, NULL) == -1)
+		if (execve(input,(char *const[]){input, NULL}, NULL) == -1)
 		{
 			perror("Error executing command");
 			exit(EXIT_FAILURE);
