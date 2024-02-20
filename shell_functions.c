@@ -1,6 +1,7 @@
 #include "shell.h"
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * read_input - Read input from the user.
@@ -17,7 +18,7 @@ char *read_input(void)
 		if (feof(stdin))
 		{
 			free(input);
-			return (NULL);
+			return (NULL); /*Handle end of file (Ctrl+D)*/
 		}
 		else
 		{
@@ -38,7 +39,7 @@ void execute_command(char *input)
 	pid_t pid;
 	int status;
 
-	/* Remove newline character from input*/
+	/*Remove newline character from input*/
 	input[strcspn(input, "\n")] = '\0';
 
 	pid = fork();
@@ -51,9 +52,10 @@ void execute_command(char *input)
 
 	if (pid == 0)
 	{
-		/* Child process*/
-		char **args = malloc(2 * sizeof(char*));
-		if (args == NULL) {
+		/*Child process*/
+		char **args = malloc(2 * sizeof(char *));
+		if (args == NULL)
+		{
 			perror("Error allocating memory");
 			exit(EXIT_FAILURE);
 		}
@@ -61,7 +63,8 @@ void execute_command(char *input)
 		args[0] = input;
 		args[1] = NULL;
 
-		if (execve(input, args, NULL) == -1) {
+		if (execve(input, args, NULL) == -1)
+		{
 			perror("Error executing command");
 			exit(EXIT_FAILURE);
 		}
