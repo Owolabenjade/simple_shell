@@ -23,7 +23,7 @@ char *read_input(void)
 *execute_command - Execute the user-input command
 *@input: User input as a command
  */
- 
+
 void execute_command(char *input)
 {
 	/* Implement command execution logic here */
