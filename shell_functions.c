@@ -1,6 +1,6 @@
 #include "shell.h"
-#include <string.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
 /**
  * read_input - Read input from the user.
@@ -38,7 +38,7 @@ void execute_command(char *input)
 	pid_t pid;
 	int status;
 
-	/* Remove newline character from input */
+	/* Remove newline character from input*/
 	input[strcspn(input, "\n")] = '\0';
 
 	pid = fork();
@@ -51,22 +51,31 @@ void execute_command(char *input)
 
 	if (pid == 0)
 	{
-		/* Child process */
-		char *args[] = {input, NULL};
-		if (execve(input, args, NULL) == -1)
-		{
+		/* Child process*/
+		char **args = malloc(2 * sizeof(char*));
+		if (args == NULL) {
+			perror("Error allocating memory");
+			exit(EXIT_FAILURE);
+		}
+
+		args[0] = input;
+		args[1] = NULL;
+
+		if (execve(input, args, NULL) == -1) {
 			perror("Error executing command");
 			exit(EXIT_FAILURE);
 		}
+
+		free(args);
 	}
 	else
 	{
-		/* Parent process */
+		/*Parent process*/
 		waitpid(pid, &status, 0);
 
 		if (WIFEXITED(status) && WEXITSTATUS(status) == 127)
 		{
-			/* Executable not found */
+			/*Executable not found*/
 			fprintf(stderr, "Command not found: %s\n", input);
 		}
 	}
