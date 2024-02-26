@@ -15,6 +15,6 @@
 void my_function(void);
 */
 
-int main(void)
+int main(void);
 
 #endif /* SHELL_H */
