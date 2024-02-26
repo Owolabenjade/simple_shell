@@ -29,7 +29,8 @@ int main(void)
 			if (feof(stdin)) /* End of file condition (Ctrl+D) */
 			{
 				printf("\n");
-				break;
+				free(buffer);
+				exit(EXIT_SUCCESS);
 			}
 			else
 			{
@@ -65,5 +66,5 @@ int main(void)
 	}
 
 	free(buffer); /* Free allocated buffer */
-	return (0);
+	return 0; /* Correct return for main function */
 }
