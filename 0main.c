@@ -1,25 +1,12 @@
 #include "shell.h"
 
 /**
-*main - Entry point of the simple shell program.
-*
-*Return: Always 0.
-*/
+ * main - Entry point
+ * Description: Prints a simple message to stdout
+ * Return: Always 0 (Success)
+ */
 int main(void)
 {
-	char *input;
-
-	while (1)
-	{
-		printf("($) ");
-		input = read_input();
-		if (input == NULL)
-			break;
-
-		execute_command(input);
-
-		free(input);
-	}
-
+	printf("Betty style example\n");
 	return (0);
 }
