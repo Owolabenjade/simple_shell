@@ -11,6 +11,7 @@
  * Description: A simple UNIX command interpreter.
  * Return: Always 0 (Success).
  */
+ 
 int main(void)
 {
 	char *line = NULL;
@@ -21,29 +22,34 @@ int main(void)
 
 	while (1) {
 		printf("%s", prompt);
-		nread = getline(&line, &bufsize, stdin); /* Read input */
+		nread = getline(&line, &bufsize, stdin);
 		if (nread == -1) {
 			free(line);
-			exit(EXIT_SUCCESS); /* Handle Ctrl+D */
+			if (!feof(stdin))
+				perror("readline");
+			exit(EXIT_SUCCESS);
 		}
 
-		/* Remove newline at the end of the input */
 		line[strcspn(line, "\n")] = 0;
 
 		child_pid = fork();
-		if (child_pid == 0) { /* Child process */
-			char *argv[] = {line, NULL};
+		if (child_pid == 0) {
+			/*Allocate argv dynamically or assign directly after declaration*/
+			char *argv[2];
+			argv[0] = line;
+			argv[1] = NULL;
+
 			if (execve(line, argv, NULL) == -1) {
 				perror("Error");
 				exit(EXIT_FAILURE);
 			}
-		} else if (child_pid > 0) { /* Parent process */
-			wait(NULL); /* Wait for the child process to finish */
+		} else if (child_pid > 0) {
+			wait(NULL); /*Wait for the child process to finish*/
 		} else {
 			perror("fork");
 		}
 	}
 
 	free(line);
-	return (0);
+	return 0;
 }
