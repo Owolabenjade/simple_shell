@@ -1,5 +1,5 @@
-#ifndef SIMPLE_SHELL_H
-#define SIMPLE_SHELL_H
+#ifndef SIMPLE_SHELL_H  // If SIMPLE_SHELL_H is not defined
+#define SIMPLE_SHELL_H  // Define SIMPLE_SHELL_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,4 +18,4 @@ char *read_input(void);
 */
 void execute_command(char *input);
 
-#endif /* SIMPLE_SHELL_H */
+#endif /* SIMPLE_SHELL_H */  // End of the include guard
