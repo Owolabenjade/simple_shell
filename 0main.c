@@ -4,8 +4,7 @@
  * main - Entry point for the simple shell.
  * Return: Always returns 0 (Success).
  */
-int main(void);
-{
+int main(void);{
 	char *buffer = NULL;
 	size_t bufsize = 1024;
 	ssize_t characters;
